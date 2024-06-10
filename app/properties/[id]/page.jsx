@@ -9,7 +9,7 @@ import { FaArrowLeft, FaBookmark } from 'react-icons/fa'
 import Spinner from '@/components/Spinner'
 import PropertyImages from '@/components/PropertyImages'
 import BookmarkButton from '@/components/BookmarkButton'
-import ShareButton from '@/components/ShareButton'
+import ShareButtons from '@/components/ShareButtons'
 import PropertyContactForm from '@/components/PropertyContactForm'
 
 const PropertyPage = () => {
@@ -67,7 +67,7 @@ const PropertyPage = () => {
                 {/* <!-- Sidebar --> */}
                 <aside className="space-y-4">
                   <BookmarkButton property={property} />
-                  <ShareButton property={property} />
+                  <ShareButtons property={property} />
 
                   {/* <!-- Contact Form --> */}
                   <PropertyContactForm property={property} />
