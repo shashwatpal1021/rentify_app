@@ -1,5 +1,5 @@
+import User from '@/app/models/User';
 import connectDB from '@/config/database';
-import User from '@/models/User';
 import { getSessionUser } from '@/utils/getSessionUser';
 
 export const dynamic = 'force-dynamic';
@@ -17,6 +17,7 @@ export const POST = async (request) => {
     }
 
     const { userId } = sessionUser;
+
 
     // Find user in database
     const user = await User.findOne({ _id: userId });

@@ -15,10 +15,12 @@ const SavedProperiesPage = () => {
         const res = await fetch('/api/bookmarks');
         if (res.status === 200) {
           const data = res.json()
-          setProperties(data)
+          // console.log("data", data.then(data => console.log(data)))
+          data.then(data => setProperties(data))
+          // setProperties(data)
         } else {
           console.log(res.statusText);
-          toast.error('Failed to fetch saved properties')
+          // toast.error('Failed to fetch saved properties')
         }
       } catch (error) {
         console.log(error)
@@ -29,6 +31,8 @@ const SavedProperiesPage = () => {
     }
     fetchSavedProperties();
   }, [])
+
+  // { console.log("properties", properties) }
   return loading ? (<Spinner loading={loading} />) : (
     <section className="px-4 py-6">
       <h1 className='text-2xl mb-4'>Saved Properties</h1>
