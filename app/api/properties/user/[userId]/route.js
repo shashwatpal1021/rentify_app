@@ -1,5 +1,5 @@
 import connectDB from "@/config/database"
-import Property from "@/app/models/Property"
+import Property from "@/models/Property"
 
 // Get /api/properties/user/:userId
 export const GET = async (request, { params }) => {
