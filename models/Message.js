@@ -11,7 +11,7 @@ const MessageSchema = new Schema({
     ref: "User",
     required: true,
   },
-  Property: {
+  property: {
     type: Schema.Types.ObjectId,
     ref: "Property",
     required: true,
@@ -31,9 +31,9 @@ const MessageSchema = new Schema({
     type: String,
     required: [true, "Message is required"],
   },
-  body: {
-    type: String,
-  },
+  // body: {
+  //   type: String,
+  // },
   read: {
     type: Boolean,
     default: false,

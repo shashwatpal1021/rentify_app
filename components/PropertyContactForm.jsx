@@ -21,7 +21,7 @@ const PropertyContactForm = ({ property }) => {
       recipient: property.owner,
       property: property._id
     }
-    // console.log("data", data)
+    console.log("data", data)
     try {
       const res = await fetch('/api/messages', {
         method: 'POST',

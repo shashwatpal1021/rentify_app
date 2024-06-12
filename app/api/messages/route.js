@@ -42,12 +42,14 @@ export const GET = async () => {
 };
 
 // POST /api/messages
+
 export const POST = async (request) => {
+
   try {
     await connectDB();
 
-    const { name, email, phone, message, property, recipient } =
-      await request.json();
+    const { name, email, phone, message, property, recipient } = await request.json();
+
 
     const sessionUser = await getSessionUser();
 
@@ -60,7 +62,7 @@ export const POST = async (request) => {
 
     const { user } = sessionUser;
 
-    console.log("user", user);
+    // console.log("user", user);
 
     // Can not send message to self
     if (user.id === recipient) {
@@ -73,11 +75,11 @@ export const POST = async (request) => {
     const newMessage = new Message({
       sender: user.id,
       recipient,
-      property,
+      property: property,
       name,
       email,
       phone,
-      body: message,
+      message,
     });
 
     console.log("newMessage", newMessage);
@@ -91,4 +93,4 @@ export const POST = async (request) => {
     console.log(error);
     return new Response('Something went wrong', { status: 500 });
   }
-};
+}
