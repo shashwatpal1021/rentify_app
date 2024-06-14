@@ -1,7 +1,6 @@
-import connectDB from "@/config/database";
-import Message from "@/models/Message";
-import { getSessionUser } from "@/utils/getSessionUser";
-
+import connectDB from '@/config/database';
+import Message from '@/models/Message';
+import { getSessionUser } from '@/utils/getSessionUser';
 
 export const dynamic = 'force-dynamic';
 
@@ -9,79 +8,71 @@ export const dynamic = 'force-dynamic';
 export const PUT = async (request, { params }) => {
   try {
     await connectDB();
+
+    const { id } = params;
+
     const sessionUser = await getSessionUser();
+
     if (!sessionUser || !sessionUser.user) {
-      return new Response(JSON.stringify('User ID is required'), {
+      return new Response('User ID is required', {
         status: 401,
       });
     }
+
     const { userId } = sessionUser;
-    const { id } = params;
+
     const message = await Message.findById(id);
 
-    if (!message) {
-      return new Response(JSON.stringify('Message not found'), {
-        status: 404,
-      });
-    }
-    // verify ownerShip
+    if (!message) return new Response('Message Not Found', { status: 404 });
 
+    // Verify ownership
     if (message.recipient.toString() !== userId) {
-      return new Response(JSON.stringify('Unauthorized'), {
-        status: 401,
-      });
+      return new Response('Unauthorized', { status: 401 });
     }
 
-    const data = await request.json();
-
-
-    // upadate message to read/unread depending on the current status
-
+    // Update message to read/unread depending on the current status
     message.read = !message.read;
 
     await message.save();
-    // const updatedMessage = await Message.findByIdAndUpdate(id, data, {
-    //   new: true,
-    // });
 
     return new Response(JSON.stringify(message), { status: 200 });
   } catch (error) {
     console.log(error);
     return new Response('Something went wrong', { status: 500 });
   }
-}
+};
 
-
-// DELETE api/messages/:id
+// DELETE /api/messages/:id
 export const DELETE = async (request, { params }) => {
   try {
     await connectDB();
-    const sessionUser = await getSessionUser();
-    if (!sessionUser || !sessionUser.user) {
-      return new Response(JSON.stringify('User ID is required'), {
-        status: 401,
-      });
-    }
-    const { userId } = sessionUser;
+
     const { id } = params;
-    const message = await Message.findById(id);
-    if (!message) {
-      return new Response(JSON.stringify('Message not found'), {
 
-        status: 404,
-      });
-    }
-    // verify ownerShip
-    if (message.recipient.toString() !== userId) {
-      return new Response(JSON.stringify('Unauthorized'), {
+    const sessionUser = await getSessionUser();
+
+    if (!sessionUser || !sessionUser.user) {
+      return new Response('User ID is required', {
         status: 401,
       });
     }
-    await message.deleteOne(id);
 
-    return new Response(null, { status: 204 });
+    const { userId } = sessionUser;
+
+    const message = await Message.findById(id);
+
+    if (!message) return new Response('Message Not Found', { status: 404 });
+
+    // Verify ownership
+    if (message.recipient.toString() !== userId) {
+      return new Response('Unauthorized', { status: 401 });
+    }
+
+    await message.deleteOne();
+
+    return new Response('Message Deleted', { status: 200 });
   } catch (error) {
     console.log(error);
     return new Response('Something went wrong', { status: 500 });
   }
-}
+};
